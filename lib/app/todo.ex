@@ -85,5 +85,6 @@ defmodule App.Todo do
 
   def query(queryable, _params) do
     queryable
+    |> order_by(desc: :inserted_at)
   end
 end

@@ -11,8 +11,8 @@ defmodule AppWeb.Schema do
     field(:description, non_null(:string))
     field(:color, non_null(:string))
     field(:done, non_null(:boolean))
-    field(:inserted_at, :time)
-    field(:updated_at, :time)
+    field(:inserted_at, :naive_datetime)
+    field(:updated_at, :naive_datetime)
   end
 
   object :user do
