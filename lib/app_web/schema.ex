@@ -2,7 +2,7 @@ defmodule AppWeb.Schema do
   use Absinthe.Schema
 
   import_types(Absinthe.Type.Custom)
-  # import Absinthe.Resolution.Helpers, only: [dataloader: 1]
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   object :todo do
     field(:id, non_null(:integer))
@@ -19,10 +19,7 @@ defmodule AppWeb.Schema do
     field(:id, non_null(:integer))
     field(:name, non_null(:string))
 
-    field :todos, list_of(:todo) do
-      arg(:name, :string)
-      resolve(&AppWeb.Resolver.Todo.list_by/3)
-    end
+    field(:todos, list_of(:todo), resolve: dataloader(App.Todo))
 
     field(:inserted_at, :time)
     field(:updated_at, :time)
@@ -76,5 +73,17 @@ defmodule AppWeb.Schema do
       arg(:id, non_null(:integer))
       resolve(&AppWeb.Resolver.Todo.undone/3)
     end
+  end
+
+  def context(ctx) do
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(App.Todo, App.Todo.data())
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
 end

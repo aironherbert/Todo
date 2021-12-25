@@ -78,4 +78,12 @@ defmodule App.Todo do
     |> cast(params, %{done: false}, [:done])
     |> Repo.update()
   end
+
+  def data() do
+    Dataloader.Ecto.new(App.Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
+  end
 end

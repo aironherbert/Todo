@@ -19,7 +19,6 @@ defmodule AppWeb.Resolver.User do
 
   def list(_root, _args, _ctx) do
     users = User |> App.Repo.all()
-    IO.inspect(users)
     {:ok, User |> App.Repo.all()}
   end
 end
