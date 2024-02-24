@@ -19,6 +19,6 @@ defmodule AppWeb.Resolver.User do
 
   def list(_root, _args, _ctx) do
     users = User |> App.Repo.all()
-    {:ok, User |> App.Repo.all()}
+    {:ok, users}
   end
 end
